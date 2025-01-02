@@ -9,12 +9,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Parameters
 image_size = 64
-save_model_path = "cat_dog_classifier.pth"  # Path to the saved model
+save_model_path = "ev_charger_types_classifier.pth"  # Path to the saved model
 
 # Define the model architecture
-class CatDogClassifier(nn.Module):
+class EvChargerTypesClassifier(nn.Module):
     def __init__(self):
-        super(CatDogClassifier, self).__init__()
+        super(EvChargerTypesClassifier, self).__init__()
         self.conv_layers = nn.Sequential(
             nn.Conv2d(3, 16, kernel_size=3, padding=1),
             nn.ReLU(),
@@ -45,7 +45,7 @@ class CatDogClassifier(nn.Module):
         return x
 
 # Load the model
-model = CatDogClassifier().to(device)
+model = EvChargerTypesClassifier().to(device)
 
 # Function to test the model on a single image
 def test_model(image_path):
@@ -68,11 +68,11 @@ def test_model(image_path):
     with torch.no_grad():
         outputs = model(image.to(device))
         _, predicted = torch.max(outputs, 1)
-        classes = ['Cat', 'Dog']  # Replace with your actual class names
+        classes = ['AC_EU', 'DC_NA']  # Replace with your actual class names
         print(f"The model predicts: {classes[predicted.item()]}")
 
 # Example usage
 if __name__ == "__main__":
     # Path to the image for testing
-    test_image_path = "testimg.jpg"  # Replace with the actual path
+    test_image_path = "Images/Test/img1.jpg"  # Replace with the actual path
     test_model(test_image_path)
