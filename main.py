@@ -40,7 +40,7 @@ val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
 # Arhitektura nevronske mreže
 class EvChargerTypesClassifier(nn.Module):
-    def __init__(self):
+    def __init__(self, num_classes=2):
         super(EvChargerTypesClassifier, self).__init__()
         self.conv_layers = nn.Sequential(
             nn.Conv2d(3, 16, kernel_size=3, padding=1),  # Prvi sloj konvolucije
@@ -62,7 +62,7 @@ class EvChargerTypesClassifier(nn.Module):
             nn.Flatten(),  # Spremeni tenzor v enodimenzionalni array
             nn.Linear(64 * (image_size // 8) * (image_size // 8), 128),  # povezani linearni sloj
             nn.Tanh(),  # Aktvacijska funkcija (uvede nelinearnost)
-            nn.Linear(128, 2),  # Povezan linearni sloj za binarno klasifikacijo
+            nn.Linear(128, num_classes),  # Povezan linearni sloj za binarno klasifikacijo
             nn.Softmax(dim=1)  # Pretvori surove vrednosti v verjetnosti
         )
 
@@ -73,7 +73,8 @@ class EvChargerTypesClassifier(nn.Module):
 
 
 # Inicializacija modela izgube in optimizatcije
-model = EvChargerTypesClassifier().to(device)  # Premakni model na ustrezno napravo (GPU ali CPU)
+num_classes = 4
+model = EvChargerTypesClassifier(num_classes).to(device)  # Premakni model na ustrezno napravo (GPU ali CPU)
 criterion = nn.CrossEntropyLoss()  # Funkcija izgube za klasifikacijo
 optimizer = Adam(model.parameters(), lr=learning_rate)  # Adam optimizator
 

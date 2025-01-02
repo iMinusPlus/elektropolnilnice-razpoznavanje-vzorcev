@@ -13,7 +13,7 @@ save_model_path = "ev_charger_types_classifier.pth"  # Path to the saved model
 
 # Define the model architecture
 class EvChargerTypesClassifier(nn.Module):
-    def __init__(self):
+    def __init__(self, num_classes=2):
         super(EvChargerTypesClassifier, self).__init__()
         self.conv_layers = nn.Sequential(
             nn.Conv2d(3, 16, kernel_size=3, padding=1),
@@ -35,7 +35,7 @@ class EvChargerTypesClassifier(nn.Module):
             nn.Flatten(),
             nn.Linear(64 * (image_size // 8) * (image_size // 8), 128),
             nn.Tanh(),
-            nn.Linear(128, 2),
+            nn.Linear(128, num_classes),
             nn.Softmax(dim=1)
         )
 
@@ -45,7 +45,9 @@ class EvChargerTypesClassifier(nn.Module):
         return x
 
 # Load the model
-model = EvChargerTypesClassifier().to(device)
+classes = ['AC_EU', 'DC_NA', "AC_NA", ""]  # Replace with your actual class names
+# num_classes = 4
+model = EvChargerTypesClassifier(len(classes)).to(device)
 
 # Function to test the model on a single image
 def test_model(image_path):
@@ -68,7 +70,6 @@ def test_model(image_path):
     with torch.no_grad():
         outputs = model(image.to(device))
         _, predicted = torch.max(outputs, 1)
-        classes = ['AC_EU', 'DC_NA']  # Replace with your actual class names
         print(f"The model predicts: {classes[predicted.item()]}")
 
 # Example usage
