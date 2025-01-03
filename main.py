@@ -1,9 +1,11 @@
 import os
+from collections import Counter
+
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, random_split, WeightedRandomSampler
 from torch.optim import Adam
 import matplotlib.pyplot as plt
 from tqdm import tqdm
@@ -13,7 +15,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 image_size = 64
 batch_size = 32
-num_epochs = 100  # število prehodov skozi celotni učni nabor
+num_epochs = 10  # število prehodov skozi celotni učni nabor
 learning_rate = 0.001
 
 # data_dir = "Images/Training"
@@ -38,10 +40,22 @@ train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
+# Izpišemo število slik v posameznem razredu
+class_counts = Counter([label for _, label in dataset])
+print(f"Class distribution: {class_counts}")
+
+# Uteži razredov za uravnoteženje izgube
+class_weights = 1.0 / torch.tensor([class_counts[c] for c in range(2)], dtype=torch.float)
+sample_weights = [class_weights[label] for _, label in train_dataset]
+sampler = WeightedRandomSampler(sample_weights, len(sample_weights))
+
+# Ustvarimo nov train_loader z utežmi
+train_loader = DataLoader(train_dataset, batch_size=batch_size, sampler=sampler)
+
 
 # Arhitektura nevronske mreže
 class EvChargerTypesClassifier(nn.Module):
-    def __init__(self, num_classes=2):
+    def __init__(self):
         super(EvChargerTypesClassifier, self).__init__()
         self.conv_layers = nn.Sequential(
             nn.Conv2d(3, 16, kernel_size=3, padding=1),  # Prvi sloj konvolucije
@@ -63,7 +77,7 @@ class EvChargerTypesClassifier(nn.Module):
             nn.Flatten(),  # Spremeni tenzor v enodimenzionalni array
             nn.Linear(64 * (image_size // 8) * (image_size // 8), 128),  # povezani linearni sloj
             nn.Tanh(),  # Aktvacijska funkcija (uvede nelinearnost)
-            nn.Linear(128, num_classes),  # Povezan linearni sloj za binarno klasifikacijo
+            nn.Linear(128, 2),  # Povezan linearni sloj za binarno klasifikacijo
             nn.Softmax(dim=1)  # Pretvori surove vrednosti v verjetnosti
         )
 
@@ -74,8 +88,7 @@ class EvChargerTypesClassifier(nn.Module):
 
 
 # Inicializacija modela izgube in optimizatcije
-num_classes = 2
-model = EvChargerTypesClassifier(num_classes).to(device)  # Premakni model na ustrezno napravo (GPU ali CPU)
+model = EvChargerTypesClassifier().to(device)  # Premakni model na ustrezno napravo (GPU ali CPU)
 criterion = nn.CrossEntropyLoss()  # Funkcija izgube za klasifikacijo
 optimizer = Adam(model.parameters(), lr=learning_rate)  # Adam optimizator
 

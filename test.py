@@ -75,13 +75,60 @@ def test_model(image_path):
 # Example usage
 if __name__ == "__main__":
     # Path to the image for testing
+    valid_image_path = [
+        "test/12.jpg",
+        "test/img.png",
+        "dataset/charging_plug/1.jpg",
+        "dataset/charging_plug/2.jpg",
+        "dataset/charging_plug/3.jpg",
+        "dataset/charging_plug/4.jpg",
+        "dataset/charging_plug/5.jpg",
+        "dataset/charging_plug/6.jpg",
+        "dataset/charging_plug/7.jpg",
+        "dataset/charging_plug/8.jpg",
+        "dataset/charging_plug/9.jpg",
+        "dataset/charging_plug/10.jpg",
+        "dataset/charging_plug/11.jpg",
+        "dataset/charging_plug/12.jpg",
+        "dataset/charging_plug/13.jpg",
+        "dataset/charging_plug/14.jpg",
+        "dataset/charging_plug/15.jpg",
+        "dataset/charging_plug/16.jpg"
+    ]
+
+    invalid_image_path = [
+        "test/10.jpg",
+        "dataset/other/1.jpg",
+        "dataset/other/2.jpg",
+        "dataset/other/3.jpg",
+        "dataset/other/4.jpg",
+        "dataset/other/5.jpg",
+        "dataset/other/6.jpg",
+        "dataset/other/7.jpg",
+        "dataset/other/8.jpg",
+        "dataset/other/9.jpg",
+        "dataset/other/10.jpg",
+        "dataset/other/11.jpg",
+        "dataset/other/12.jpg",
+        "dataset/other/13.jpg",
+        "dataset/other/14.jpg",
+        "dataset/other/15.jpg",
+        "dataset/other/16.jpg"
+    ]
     # Valid
-    # Not valid
-
-
-    test_image_path0 = "test/10.jpg"
-    test_image_path1 = "test/img.png"
+    # test_image_path0 = "test/12.jpg"
+    # test_image_path1 = "test/img.png"
+    # # Not valid
+    # test_image_path0 = "test/10.jpg"
 
     # Test the model on the images
-    test_model(test_image_path0)
-    test_model(test_image_path1)
+    # test_model(test_image_path0)
+    # test_model(test_image_path1)
+
+    print("Valid images:")
+    for image_path in valid_image_path:
+        test_model(image_path)
+
+    print("\nInvalid images:")
+    for image_path in invalid_image_path:
+        test_model(image_path)
