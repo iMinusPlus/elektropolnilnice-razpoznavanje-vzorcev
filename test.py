@@ -45,7 +45,7 @@ class EvChargerTypesClassifier(nn.Module):
         return x
 
 # Load the model
-classes = ['AC_EU', 'DC_NA', "AC_NA", ""]  # Replace with your actual class names
+classes = ['valid_charger', 'not_valid']  # Replace with your actual class names
 # num_classes = 4
 model = EvChargerTypesClassifier(len(classes)).to(device)
 
@@ -75,5 +75,15 @@ def test_model(image_path):
 # Example usage
 if __name__ == "__main__":
     # Path to the image for testing
-    test_image_path = "Images/Test/img1.jpg"  # Replace with the actual path
-    test_model(test_image_path)
+    # Valid
+    test_image_path0 = "Images/Test/img0.jpg"  # Replace with the actual path
+    test_image_path1 = "Images/Test/img1.jpg"
+    test_image_path2 = "Images/Test/charger_9-390-_png_jpg.rf.69ed6af6a0e57aadd9fcbe90706bf7b4.jpg"
+    # Not valid
+    test_image_path3 = "Images/Test/IMG_3927.jpeg"
+
+    # Test the model on the images
+    test_model(test_image_path0)
+    test_model(test_image_path1)
+    test_model(test_image_path2)
+    test_model(test_image_path3)
