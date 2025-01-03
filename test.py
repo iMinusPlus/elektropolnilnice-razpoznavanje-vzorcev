@@ -45,7 +45,7 @@ class EvChargerTypesClassifier(nn.Module):
         return x
 
 # Load the model
-classes = ['valid_charger', 'not_valid']  # Replace with your actual class names
+classes = ['charging_plug', 'not_chargingplug']  # Replace with your actual class names
 # num_classes = 4
 model = EvChargerTypesClassifier(len(classes)).to(device)
 
