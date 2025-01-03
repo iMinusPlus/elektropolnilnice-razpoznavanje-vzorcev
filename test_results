@@ -1,0 +1,82 @@
+# Model 1 results:
+
+Valid images:
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: other
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: other
+The model predicts: charging_plug
+The model predicts: charging_plug
+
+Invalid images:
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: charging_plug
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: charging_plug
+The model predicts: other
+
+Model 2 results:
+
+Valid images:
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: other
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+The model predicts: charging_plug
+
+Invalid images:
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+The model predicts: other
+

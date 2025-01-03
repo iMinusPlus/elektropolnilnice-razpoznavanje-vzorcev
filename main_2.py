@@ -115,8 +115,8 @@ def train_and_validate():
         val_accuracies.append(val_accuracy)
         scheduler.step()
 
-        print(f"\rEpoh {epoch + 1}/{num_epochs}, Izguba pri treniranju: {train_losses[-1]:.4f}, "
-              f"Izguba pri validaciji: {val_losses[-1]:.4f}, Natančnost: {val_accuracy:.4f}")
+        # print(f"\rEpoh {epoch + 1}/{num_epochs}, Izguba pri treniranju: {train_losses[-1]:.4f}, "
+        #       f"Izguba pri validaciji: {val_losses[-1]:.4f}, Natančnost: {val_accuracy:.4f}")
 
     return train_losses, val_losses, val_accuracies
 
