@@ -79,6 +79,7 @@ if __name__ == "__main__":
     test_image_path0 = "Images/Test/img0.jpg"  # Replace with the actual path
     test_image_path1 = "Images/Test/img1.jpg"
     test_image_path2 = "Images/Test/charger_9-390-_png_jpg.rf.69ed6af6a0e57aadd9fcbe90706bf7b4.jpg"
+    test_image_path4 = "Images/Test/img.png"
     # Not valid
     test_image_path3 = "Images/Test/IMG_3927.jpeg"
 
@@ -87,3 +88,4 @@ if __name__ == "__main__":
     test_model(test_image_path1)
     test_model(test_image_path2)
     test_model(test_image_path3)
+    test_model(test_image_path4)

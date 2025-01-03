@@ -16,7 +16,8 @@ batch_size = 32
 num_epochs = 100  # število prehodov skozi celotni učni nabor
 learning_rate = 0.001
 
-data_dir = "Images/Training"
+# data_dir = "Images/Training"
+data_dir = "dataset"
 save_model_path = "ev_charger_types_classifier.pth"
 
 # Data transformations: Preprocessing steps for the dataset
@@ -100,22 +101,22 @@ def train_and_validate():
 
             train_loss += loss.item()
 
-    train_losses.append(train_loss / len(train_loader))  # Zabeleži izgubo pri treniranju
+        train_losses.append(train_loss / len(train_loader))  # Zabeleži izgubo pri treniranju
 
-    # Validacija
-    model.eval()  # Nastavi model v način validacije
-    val_loss = 0
-    with torch.no_grad():  # Onemogoči izračun gradientov
-        for images, labels in val_loader:
-            images, labels = images.to(device), labels.to(device)
-            outputs = model(images)
-            loss = criterion(outputs, labels)
-            val_loss += loss.item()
+        # Validacija
+        model.eval()  # Nastavi model v način validacije
+        val_loss = 0
+        with torch.no_grad():  # Onemogoči izračun gradientov
+          for images, labels in val_loader:
+              images, labels = images.to(device), labels.to(device)
+              outputs = model(images)
+              loss = criterion(outputs, labels)
+              val_loss += loss.item()
 
-    val_losses.append(val_loss / len(val_loader))  # Zabeleži izgubo pri validaciji
+        val_losses.append(val_loss / len(val_loader))  # Zabeleži izgubo pri validaciji
 
-    print(
-        f"Epoh [{epoch + 1}/{num_epochs}], Izguba pri treniranju: {train_losses[-1]:.4f}, Izguba pri validaciji: {val_losses[-1]:.4f}")
+        # print(
+        #     f"Epoh [{epoch + 1}/{num_epochs}], Izguba pri treniranju: {train_losses[-1]:.4f}, Izguba pri validaciji: {val_losses[-1]:.4f}")
 
     return train_losses, val_losses
 
