@@ -35,8 +35,8 @@ class EvChargerTypesClassifier(nn.Module):
             nn.Flatten(),
             nn.Linear(64 * (image_size // 8) * (image_size // 8), 128),
             nn.Tanh(),
-            nn.Linear(128, num_classes),
-            nn.Softmax(dim=1)
+            nn.Linear(128, 1),  # Single output for binary classification
+            nn.Sigmoid()  # Sigmoid for binary classification
         )
 
     def forward(self, x):
@@ -69,8 +69,8 @@ def test_model(image_path):
     # Perform prediction
     with torch.no_grad():
         outputs = model(image.to(device))
-        _, predicted = torch.max(outputs, 1)
-        print(f"The model predicts: {classes[predicted.item()]}")
+        prediction = (outputs > 0.5).item()  # Threshold for binary classification
+        print(f"The model predicts: {classes[prediction]}")
 
 # Example usage
 if __name__ == "__main__":

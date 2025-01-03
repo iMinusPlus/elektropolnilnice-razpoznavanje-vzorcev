@@ -28,6 +28,8 @@ transform = transforms.Compose([
     transforms.RandomHorizontalFlip(),  # naredimo naključni flip za augmentacijo
     transforms.RandomRotation(15),  # naredimo naključno rotacijo za augmentacijo
     transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2),  # spremenimo barvo
+    transforms.RandomAffine(degrees=15, translate=(0.1, 0.1), scale=(0.9, 1.1)),
+    transforms.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),
     transforms.ToTensor(),  # Spremenimo sliko v pytorch tensor
     transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])  # Normaliziramo tensor
 ])
@@ -73,12 +75,19 @@ class EvChargerTypesClassifier(nn.Module):
             nn.Dropout(0.25),
             nn.AvgPool2d(2)
         )
+        # self.fc_layers = nn.Sequential(
+        #     nn.Flatten(),  # Spremeni tenzor v enodimenzionalni array
+        #     nn.Linear(64 * (image_size // 8) * (image_size // 8), 128),  # povezani linearni sloj
+        #     nn.Tanh(),  # Aktvacijska funkcija (uvede nelinearnost)
+        #     nn.Linear(128, 2),  # Povezan linearni sloj za binarno klasifikacijo
+        #     nn.Softmax(dim=1)  # Pretvori surove vrednosti v verjetnosti
+        # )
         self.fc_layers = nn.Sequential(
-            nn.Flatten(),  # Spremeni tenzor v enodimenzionalni array
-            nn.Linear(64 * (image_size // 8) * (image_size // 8), 128),  # povezani linearni sloj
-            nn.Tanh(),  # Aktvacijska funkcija (uvede nelinearnost)
-            nn.Linear(128, 2),  # Povezan linearni sloj za binarno klasifikacijo
-            nn.Softmax(dim=1)  # Pretvori surove vrednosti v verjetnosti
+            nn.Flatten(),
+            nn.Linear(64 * (image_size // 8) * (image_size // 8), 128),
+            nn.Tanh(),
+            nn.Linear(128, 1),  # Output a single value for binary classification
+            nn.Sigmoid()  # Binary classification uses Sigmoid
         )
 
     def forward(self, x):
@@ -89,7 +98,8 @@ class EvChargerTypesClassifier(nn.Module):
 
 # Inicializacija modela izgube in optimizatcije
 model = EvChargerTypesClassifier().to(device)  # Premakni model na ustrezno napravo (GPU ali CPU)
-criterion = nn.CrossEntropyLoss()  # Funkcija izgube za klasifikacijo
+criterion = nn.BCELoss()
+# criterion = nn.CrossEntropyLoss()  # Funkcija izgube za klasifikacijo
 optimizer = Adam(model.parameters(), lr=learning_rate)  # Adam optimizator
 
 
@@ -103,6 +113,8 @@ def train_and_validate():
 
         for images, labels in train_loader:
             images, labels = images.to(device), labels.to(device)  # Premakni podatke na ustrezno napravo
+            # Reshape labels to match the model output shape
+            labels = labels.float().unsqueeze(1)  # Add an extra dimension and convert to float
 
             # Propagacija naprej
             outputs = model(images)
@@ -122,6 +134,9 @@ def train_and_validate():
         with torch.no_grad():  # Onemogoči izračun gradientov
           for images, labels in val_loader:
               images, labels = images.to(device), labels.to(device)
+              # Reshape labels to match the model output shape
+              labels = labels.float().unsqueeze(1)
+
               outputs = model(images)
               loss = criterion(outputs, labels)
               val_loss += loss.item()
