@@ -29,5 +29,5 @@ def resize_and_rename_images(input_folder, output_folder, target_size=(100, 100)
 # Primer uporabe
 if __name__ == "__main__":
     input_folder = "data"  # Zamenjaj z dejansko potjo do mape z vhodnimi slikami
-    output_folder = "dataset"  # Zamenjaj z želeno potjo za shranjevanje obdelanih slik
+    output_folder = "dataset/charging_plug"  # Zamenjaj z želeno potjo za shranjevanje obdelanih slik
     resize_and_rename_images(input_folder, output_folder)
